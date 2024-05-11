@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop Bill PDF</title>
+  </head>
+  <body>
+    <button id="button_download">Download</button>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+      integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"
+      integrity="sha512-2/YdOMV+YNpanLCF5MdQwaoFRVbTmrJ4u4EpqS/USXAQNUDgI5uwYi6J98WVtJKcfe1AbgerygzDFToxAlOGEQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script>
+      window.jsPDF = window.jspdf.jsPDF;
+      const downloadPdf = () => {
+        // Your JSON data
+        const jsonData = {
+          shopName: "My Shop",
+          items: [
+            { name: "Item 1", price: 10 },
+            { name: "Item 2", price: 20 },
+            // Add more items as needed
+          ],
+          total: 30,
+        };
+
+        // Create a new jsPDF instance
+        const pdf = new jsPDF();
+
+        // Set font size and style
+        pdf.setFontSize(16);
+        pdf.setFont("helvetica", "bold");
+
+        // Add shop name to the PDF
+        pdf.text("Shop Bill", 20, 20);
+
+        // Set font size and style for item details
+        pdf.setFontSize(12);
+        pdf.setFont("helvetica", "normal");
+
+        // Add item details to the PDF
+        let yPosition = 40;
+        jsonData.items.forEach((item) => {
+          pdf.text(`${item.name}: $${item.price.toFixed(2)}`, 20, yPosition);
+          yPosition += 10;
+        });
+
+        // Set font size and style for total
+        pdf.setFontSize(14);
+        pdf.setFont("helvetica", "bold");
+
+        // Add total to the PDF
+        pdf.text(`Total: $${jsonData.total.toFixed(2)}`, 20, yPosition + 10);
+
+        // Save the PDF
+        pdf.save("shop_bill.pdf");
+      };
+
+      const btn = document.getElementById("button_download");
+      btn.addEventListener("click", downloadPdf);
+    </script>
+  </body>
+</html>

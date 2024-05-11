@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop Bill PDF</title>
+  </head>
+  <body>
+    <button id="button_download">Download</button>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+      integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"
+      integrity="sha512-2/YdOMV+YNpanLCF5MdQwaoFRVbTmrJ4u4EpqS/USXAQNUDgI5uwYi6J98WVtJKcfe1AbgerygzDFToxAlOGEQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script>
+      const data = [
+        ["Product1", "100"],
+        ["Product2", "300"],
+        ["Product3", "200"],
+        ["Product4", "400"],
+      ];
+      const total = "1000";
+      const totalStyle = { fontStyle: "bold", fillColor: [211, 211, 211] };
+      const shopNameSpaceRows = [
+        {
+          content: "",
+          colSpan: 2,
+          styles: {
+            fillColor: [211, 211, 211],
+          },
+        },
+      ];
+      const shopNameRow = [
+        {
+          content: "MY SHOP",
+          colSpan: 2,
+          styles: {
+            fontStyle: "bold",
+            halign: "center",
+            fillColor: [211, 211, 211],
+            textColor: [0, 0, 0],
+            fontSize: 20,
+          },
+        },
+      ];
+
+      window.jsPDF = window.jspdf.jsPDF;
+      const downloadPdf = () => {
+        // Create a new jsPDF instance
+        const pdf = new jsPDF();
+
+        pdf.autoTable({
+          head: [
+            shopNameSpaceRows,
+            shopNameRow,
+            shopNameSpaceRows,
+            ["Product Name", "Price"],
+          ],
+          body: [
+            ...data,
+            [
+              {
+                content: "Total",
+                styles: totalStyle,
+              },
+              {
+                content: total,
+                styles: totalStyle,
+              },
+            ],
+          ],
+        });
+
+        pdf.save("bill.pdf");
+      };
+
+      const btn = document.getElementById("button_download");
+      btn.addEventListener("click", downloadPdf);
+    </script>
+  </body>
+</html>
